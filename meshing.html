@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Meshing</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background-color: #1e1e1e;
+            margin: 0;
+            overflow: hidden;
+
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+<script src="visualizer.min.js"></script>
+
+<script>
+
+    // var url = '/'
+    var url = 'https://studiobitonti.appspot.com/'
+
+    var app = new visualizer({
+
+        background: 0xffffff,
+        defaultEnvironment: 2,
+        GUI:true
+
+    
+    });
+
+    var line_mesh
+
+    app.file.addFileInput('upload',function (filename) {
+
+        if(filename.split('.').pop().toLowerCase()!=='obj') {
+
+            alert('must use obj lines')
+            return
+        }
+
+        alert('upload successfully as '+filename)
+
+        console.log(filename)
+
+        meshingParam.lines = filename
+
+        $.get(url+'storage/download',{name:filename},function (obj) {
+
+            if(line_mesh) app.scene.remove(line_mesh);
+            line_mesh = app.loadOBJCurves(obj,true);
+            line_mesh.material.color.setRGB(0.2,0.2,0.2)
+
+
+        })
+
+
+    },null,null,true)
+
+
+    var meshingParam = {
+
+        resolution: 300,
+        memberThickness: 1.5,
+        lines: 'test_lines.bin'
+
+    }
+
+
+    var meshingUI = app.gui.addFolder('meshing');
+    meshingUI.open();
+
+    var meshing = false
+
+    meshingUI.add(meshingParam,'lines').listen();
+    meshingUI.add(meshingParam,'resolution');
+    meshingUI.add(meshingParam,'memberThickness');
+    meshingUI.add({run: function () {
+
+        if(meshing) {
+
+            alert('Still meshing...')
+            return
+
+        }
+
+        meshing = true
+
+        console.log('input',meshingParam)
+
+
+        $.get(url+'marchingCube',meshingParam,function (data) {
+
+            console.log('output',data)
+
+            for(var i=0; i<data.length; i++){
+
+                data[i] = 'http://studiobitonti.appspot.com/storage/download?name='+data[i]
+                // window.open(data[i])
+            }
+
+            app.saveAs(JSON.stringify(data),'download.txt')
+
+            meshing = false
+
+
+
+        }).fail(function (err) {
+            alert(err.statusText)
+            meshing = false
+            console.log(err)
+        })
+
+        alert('Running, please wait...')
+
+    }},'run');
+
+
+    app.run();
+
+
+</script>
+
+</body>
+</html>
