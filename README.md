@@ -2,6 +2,8 @@
 
 ### <a href='https://francisbitontistudio.github.io/Meshing_demo/'>Live demo</a><br>
 
+### <a href='https://drive.google.com/open?id=1S-kPNRyWH5Q7R0NdnzrWHPnlcsG0RXBg'>Example lines obj</a><br>
+
 ### 1. Upload OBJ lines
 
 The demo accepts lines in obj format. Select file and then click on Submit. Sucessfully upload file will be displayed on screen
