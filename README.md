@@ -1,6 +1,6 @@
 # Meshing_demo
 
-### * <a href='https://francisbitontistudio.github.io/Meshing_demo/'>Live demo</a><br>
+### <a href='https://francisbitontistudio.github.io/Meshing_demo/'>Live demo</a><br>
 
 ## 1. Upload OBJ lines
 
